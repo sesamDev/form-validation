@@ -5,6 +5,8 @@ class FormValidation {
   static zipcodeInput = document.getElementById("inputZipcode");
   static countryInput = document.getElementById("inputCountry");
   static submitBtn = document.getElementById("submitBtn");
+  static formError = document.querySelector(".form-error");
+  static allErrors = document.querySelectorAll(".error-msg");
   static emailErrorMsg = " ";
   static passwordErrorMsg = " ";
   static passwordRepeatErrorMsg = " ";
@@ -19,6 +21,8 @@ class FormValidation {
     this.emailValid();
     this.passwordValid();
     this.repeatedPasswordValid();
+    this.zipcodeValid();
+    this.countryValid();
   }
   static emailValid() {
     if (this.emailInput.value === "") {
@@ -127,7 +131,7 @@ class FormValidation {
   }
 
   static showError(element, errorMsg) {
-    console.log(element.classList.remove("hide"));
+    element.classList.remove("hide");
     element.innerText = errorMsg;
   }
   static hideError(element) {
@@ -177,8 +181,18 @@ class FormValidation {
       }
     });
     this.submitBtn.addEventListener("click", () => {
-      console.log("Submit");
       this.allFieldsValid();
+      let formValid = true;
+      this.allErrors.forEach((error) => {
+        if (error.innerText !== "") {
+          formValid = false;
+          this.showError(this.formError, "Please adress the incorrect fields");
+        }
+      });
+      if (formValid) {
+        this.hideError(this.formError);
+        alert("You made it, good job!");
+      }
     });
   }
 }
