@@ -50,6 +50,10 @@ class FormValidation {
     }
   }
   static passwordValid() {
+    if (this.passwordInput.value === "") {
+      this.passwordErrorMsg = "Password is required";
+      return false;
+    }
     // Min length is 8 characters
     if (!/.{8}/.test(this.passwordInput.value)) {
       this.passwordErrorMsg = "Minimum password length is 8";
@@ -93,8 +97,29 @@ class FormValidation {
   }
 
   static zipcodeValid() {
+    if (this.zipcodeInput.value === "") {
+      this.zipcodeErrorMsg = "Zipcode is required";
+      return false;
+    }
     if (!/[0-9]{5}/.test(this.zipcodeInput.value)) {
       this.zipcodeErrorMsg = "Must contain 5 digits eg. 12345";
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  static countryValid() {
+    if (this.countryInput.value === "") {
+      this.countryErrorMsg = "Country is required";
+      return false;
+    }
+    if (/[0-9 !"#$%&'\(\)*\+,-.\/:;<=>?@\[\]^_`{\|}~]/.test(this.countryInput.value)) {
+      this.countryErrorMsg = "Can only contain letters";
+      return false;
+    }
+    if (!/[a-zA-Z\.]{4}/.test(this.countryInput.value)) {
+      this.countryErrorMsg = "Minimum letters is four";
       return false;
     } else {
       return true;
@@ -144,7 +169,12 @@ class FormValidation {
       }
     });
     this.countryInput.addEventListener("input", (e) => {
-      console.log("country input");
+      if (this.countryValid()) {
+        this.hideError(e.target.previousElementSibling);
+      }
+      if (!this.countryValid()) {
+        this.showError(e.target.previousElementSibling, this.countryErrorMsg);
+      }
     });
     this.submitBtn.addEventListener("click", () => {
       console.log("Submit");
