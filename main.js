@@ -92,6 +92,15 @@ class FormValidation {
     }
   }
 
+  static zipcodeValid() {
+    if (!/[0-9]{5}/.test(this.zipcodeInput.value)) {
+      this.zipcodeErrorMsg = "Must contain 5 digits eg. 12345";
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   static showError(element, errorMsg) {
     console.log(element.classList.remove("hide"));
     element.innerText = errorMsg;
@@ -127,7 +136,12 @@ class FormValidation {
       }
     });
     this.zipcodeInput.addEventListener("input", (e) => {
-      console.log("zipcode input");
+      if (this.zipcodeValid()) {
+        this.hideError(e.target.previousElementSibling);
+      }
+      if (!this.zipcodeValid()) {
+        this.showError(e.target.previousElementSibling, this.zipcodeErrorMsg);
+      }
     });
     this.countryInput.addEventListener("input", (e) => {
       console.log("country input");
